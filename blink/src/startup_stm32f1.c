@@ -11,7 +11,8 @@
 extern uint32_t _etext;
 extern uint32_t _sdata;
 extern uint32_t _edata;
-extern uint32_t _la_data;
+//extern uint32_t _la_data;
+extern uint32_t _sidata;
 
 extern uint32_t _sbss;
 extern uint32_t _ebss;
@@ -35,6 +36,7 @@ void WWDG_IRQHandler(void) __attribute__((weak, alias("Default_Handler")));
 void PVD_IRQHandler(void) __attribute__((weak, alias("Default_Handler")));
 void TAMP_STAMP_IRQHandler(void) __attribute__((weak, alias("Default_Handler")));
 void RTC_WKUP_IRQHandler(void) __attribute__((weak, alias("Default_Handler")));
+void FLASH_IRQHandler(void) __attribute__((weak, alias("Default_Handler")));
 void RCC_IRQHandler(void) __attribute__((weak, alias("Default_Handler")));
 void EXTI0_IRQHandler(void) __attribute__((weak, alias("Default_Handler")));
 void EXTI1_IRQHandler(void) __attribute__((weak, alias("Default_Handler")));
@@ -113,7 +115,7 @@ uint32_t vectors[] __attribute__((section(".isr_vector"))) = {
     (uint32_t)PVD_IRQHandler,
     (uint32_t)TAMP_STAMP_IRQHandler,
     (uint32_t)RTC_WKUP_IRQHandler,
-    0, // Flash global interrupt
+    (uint32_t)FLASH_IRQHandler, // Flash global interrupt
     (uint32_t)RCC_IRQHandler,
     (uint32_t)EXTI0_IRQHandler,
     (uint32_t)EXTI1_IRQHandler,
@@ -152,23 +154,14 @@ uint32_t vectors[] __attribute__((section(".isr_vector"))) = {
     (uint32_t)EXTI15_10_IRQHandler,
     (uint32_t)RTC_Alarm_IRQHandler,
     (uint32_t)USB_Wakeup_IRQHandler,
-    (uint32_t)TIM8_BRK_IRQHandler,
-    (uint32_t)TIM8_UP_IRQHandler,
-    (uint32_t)TIM8_TRG_COM_IRQHandler,
-    (uint32_t)TIM8_CC_IRQHandler,
-    (uint32_t)ADC3_IRQHandler,
-    (uint32_t)FSMC_IRQHandler,
-    (uint32_t)SDIO_IRQHandler,
-    (uint32_t)TIM5_IRQHandler,
-    (uint32_t)SPI3_IRQHandler,
-    (uint32_t)UART4_IRQHandler,
-    (uint32_t)UART5_IRQHandler,
-    (uint32_t)TIM6_IRQHandler,
-    (uint32_t)TIM7_IRQHandler,
-    (uint32_t)DMA2_Channel1_IRQHandler,
-    (uint32_t)DMA2_Channel2_IRQHandler,
-    (uint32_t)DMA2_Channel3_IRQHandler,
-    (uint32_t)DMA2_Channel4_5_IRQHandler,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0 // BOOT RAM
 };
 
 // Command: a default "do nothing" handler
@@ -183,7 +176,7 @@ void Reset_Handler(void)
 {
   // copy .data section to SRAM
   uint8_t *pSramData = (uint8_t *)&_sdata;    // sram
-  uint8_t *pFlashData = (uint8_t *)&_la_data; // flash
+  uint8_t *pFlashData = (uint8_t *)&_sidata; // flash
   uint32_t data_size = (uint32_t)&_edata - (uint32_t)&_sdata;
   for (uint32_t i = 0; i < data_size; i++)
   {

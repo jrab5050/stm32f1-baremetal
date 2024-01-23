@@ -28,22 +28,22 @@ void ms_delay(int ms)
 
 int main(void)
 {
-    /* Enable clock for port C */
-    RCC->APB2ENR |= RCC_APB2ENR_IOPCEN;
+    /* Enable clock for port A */
+    RCC->APB2ENR |= RCC_APB2ENR_IOPAEN;
 
-    /* Set PC13 as General Purpose Output @2MHZ */
-    GPIOC->CRH &= ~(GPIO_CRH_CNF13 | GPIO_CRH_MODE13);
-    GPIOC->CRH |= GPIO_CRH_MODE13_1;
+    /* Set PA5 as General Purpose Output @2MHZ */
+    GPIOA->CRL &= ~(GPIO_CRL_CNF5 | GPIO_CRL_MODE5);
+    GPIOA->CRL |= GPIO_CRL_MODE5;
 
     while (1)
     {
-        /* Set bit corresponding to PC13 */
-        GPIOC->BSRR = GPIO_BSRR_BS13;
-        ms_delay(1000);
+        /* Set bit corresponding to PA5 */
+        GPIOA->BSRR = GPIO_BSRR_BS5;
+        ms_delay(500);
 
-        /* Reset bit corresponding to PC13 */
-        GPIOC->BRR = GPIO_BRR_BR13;
-        ms_delay(1000);
+        /* Reset bit corresponding to PA5 */
+        GPIOA->BRR = GPIO_BRR_BR5;
+        ms_delay(500);
     }
 }
 
