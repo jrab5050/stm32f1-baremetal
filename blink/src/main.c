@@ -39,11 +39,11 @@ int main(void)
     {
         /* Set bit corresponding to PA5 */
         GPIOA->BSRR = GPIO_BSRR_BS5;
-        ms_delay(500);
+        ms_delay(1000);
 
         /* Reset bit corresponding to PA5 */
         GPIOA->BRR = GPIO_BRR_BR5;
-        ms_delay(500);
+        ms_delay(1000);
     }
 }
 
